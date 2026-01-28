@@ -1,1 +1,36 @@
+name: Build Kernel
 
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build kernel via ophub action
+        uses: ophub/amlogic-s9xxx-armbian@main
+        with:
+          build_target: kernel
+          kernel_source: unifreq
+          kernel_version: 6.1.y
+          kernel_auto: true
+          kernel_package: all
+          kernel_sign: -dmabuf
+          kernel_toolchain: gcc
+          kernel_config: kernel-config
+          compress_format: xz
+          docker_image: ophub/armbian-noble:amd64
+          delete_source: false
+          silent_log: false
+          enable_log: false
+          ccache_clear: false
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-output
+          path: |
+            compile-kernel/output/**
+            output/**
