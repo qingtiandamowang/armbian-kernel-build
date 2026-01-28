@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_DEFAULT_PLATFORM: linux/arm64
     steps:
       - uses: actions/checkout@v4
 
@@ -21,7 +23,7 @@ jobs:
           kernel_toolchain: gcc
           kernel_config: kernel-config
           compress_format: xz
-          docker_image: ophub/armbian-noble:amd64
+          docker_image: ophub/armbian-trixie:arm64
           delete_source: false
           silent_log: false
           enable_log: false
